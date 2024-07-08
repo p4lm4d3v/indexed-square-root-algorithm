@@ -1,6 +1,6 @@
 # Indexed Square Root Algorithm
 
-- Invented by `p4lm4d3v` in `2022`
+- Designed by `p4lm4d3v` in `2022`
 
 # Benchamark
 
