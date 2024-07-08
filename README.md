@@ -2,7 +2,7 @@
 
 - Designed by `p4lm4d3v` in `2022`
 
-# Benchamark
+# Benchmark
 
 - I tested this algorithm on this set of number `[4, 1000000]` and calculated the minimum difference between this algorithm and the standart `sqrt()` function implemented for the type [`f64`](https://doc.rust-lang.org/stable/std/primitive.f64.html#method.sqrt) in [`RUST`](https://www.rust-lang.org/).
 
