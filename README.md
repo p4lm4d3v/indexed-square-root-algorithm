@@ -166,9 +166,9 @@ This algorithm can be looked as a [linear interpolation](https://en.wikipedia.or
 
 # Implemenatation Template (add your own implementation below)
 
-- Implemented by `[GITHUB-USERNAME]` in `[LANGUAGE]` on `[FINISHING-DATE]`
+- Implementation by `[GITHUB-USERNAME]` in `[LANGUAGE]` on `[FINISHING-DATE]`
 - Please make sure you add links for the username and language, and also use the `DD.MM.YYYY` date format.
 
 # Implementations
 
-- Implemented by [`p4lm4d3v`](https://github.com/p4lm4d3v/) in [`RUST`](https://www.rust-lang.org/) on `07.07.2024.`
+- Implementation by [`p4lm4d3v`](https://github.com/p4lm4d3v/) in [`RUST`](https://www.rust-lang.org/) on `08.07.2024.`
