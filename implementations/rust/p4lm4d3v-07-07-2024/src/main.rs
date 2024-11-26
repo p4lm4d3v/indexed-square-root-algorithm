@@ -1,6 +1,6 @@
 fn main() {
-    for x in 0..20 {
-        println!("idxsqrt({}) = {}", x, idxsqrt_simplified(x));
+    for x in 1..=20 {
+        println!("idxsqrt({}) = {:.3}", x, idxsqrt_simplified(x));
     }
 }
 
@@ -8,7 +8,7 @@ fn idxsqrt_simplified(z: usize) -> f64 {
     if z == 0 || z == 1 {
         return z as f64;
     }
-    if has_natural_root(z) || z < 5 {
+    if has_whole_root(z) || z < 5 {
         return (z as f64).sqrt();
     }
 
@@ -29,7 +29,7 @@ fn idxsqrt(z: usize) -> f64 {
     if z == 0 || z == 1 {
         return z as f64;
     }
-    if has_natural_root(z) || z < 5 {
+    if has_whole_root(z) || z < 5 {
         return (z as f64).sqrt();
     }
 
@@ -47,20 +47,25 @@ fn idxsqrt(z: usize) -> f64 {
 }
 
 fn lower_sqrt(mut z: usize) -> usize {
-    while !has_natural_root(z) {
+    while !has_whole_root(z) {
         z -= 1;
     }
     z
 }
 
 fn higher_sqrt(mut z: usize) -> usize {
-    while !has_natural_root(z) {
+    while !has_whole_root(z) {
         z += 1;
     }
     z
 }
 
-fn has_natural_root(n: usize) -> bool {
-    let sqrt: f64 = (n as f64).sqrt().floor();
-    sqrt * sqrt == n as f64
+fn has_whole_root(n: usize) -> bool {
+    let mut i = 0; 
+
+    while (i * i) < n {
+        i += 1;
+    }
+
+    i * i == n
 }
