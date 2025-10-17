@@ -1,7 +1,7 @@
 
 # Indexed Square Root Algorithm
 
-* Designed by **[**p4lm4d3v**](https://github.com/p4lm4d3v/)** in **2022**
+* Designed by **[**p4lm4d3v**](https://github.com/p4lm4d3v/)** in `2022`
 * Implemented in **[**Rust**](https://www.rust-lang.org/)** on `08.07.2024.`
 
 
