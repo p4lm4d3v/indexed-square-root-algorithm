@@ -1,174 +1,210 @@
+
 # Indexed Square Root Algorithm
 
-- Designed by `p4lm4d3v` in `2022`
+* Designed by **[**p4lm4d3v**](https://github.com/p4lm4d3v/)** in **2022**
+* Implemented in **[**Rust**](https://www.rust-lang.org/)** on `08.07.2024.`
 
-# Benchmark
 
-- I tested this algorithm on this set of number `[4, 1000000]` and calculated the minimum difference between this algorithm and the standart `sqrt()` function implemented for the type [`f64`](https://doc.rust-lang.org/stable/std/primitive.f64.html#method.sqrt) in [`RUST`](https://www.rust-lang.org/).
 
-&emsp;&emsp;&emsp; ![](min_max.png)
+## Benchmark
 
-# Algorithm
+I tested this algorithm on the number set `[4, 1000000]` and calculated the **minimum difference** between this algorithm and the standard `sqrt()` function implemented for the type [`f64`](https://doc.rust-lang.org/stable/std/primitive.f64.html#method.sqrt) in [Rust](https://www.rust-lang.org/).
 
-I designed this algorithm in my second year of highschool when i was 16. I was bored in class and started messing with some numbers and got to this.
-This algorithm is not perfectly accurate, but it was not designed to do so. It was made so I could in a fast way calculate the approximate square root of a natural non-zero number that does not have a natural root.
+         ![](min_max.png)
 
-The algorithm works in this a way:
 
-1. &nbsp; We first define our number `z` whose root we want to calculate following these constraints:
+## Algorithm
 
-&emsp;&emsp;&emsp; $ \large z \, \in \, \mathbb{N} \;\; \land \;\; z \, > \, 4 $
+I designed this algorithm in my second year of high school when I was 16.
+I was bored in class, started playing with numbers, and came up with this.
 
-2. &nbsp; Then we define the closest numbers that have natural roots around the number `z`:
+This algorithm is **not perfectly accurate**, but it was not designed to be.
+It’s meant to **quickly approximate the square root of a natural number** that does **not** have a natural root.
 
-&emsp;&emsp;&emsp; $ \large x \, < \, z \;\; \land \;\; \sqrt{x} \, \in \, \mathbb{N} \;\; ( \text{below our} \,\, z )$
-  <br>
-  &emsp;&emsp;&emsp; $ \large y \, > \, z \;\; \land \;\; \sqrt{y} \, \in \, \mathbb{N} \;\; ( \text{above our} \,\, z )$
+### Step 1 — Define `z`
 
-3. &nbsp; Then we generate a range from `x` to `y` not counting them:
+We define the number `z` whose root we want to calculate:
 
-&emsp;&emsp;&emsp; $ \large range(x, \; y) \; = \; x + 1, \; x + 2 \; ... \; x + n \; ... \; y - 2, \; y - 1 $
-&emsp;&emsp;&emsp; $ \large \lor $
-&emsp;&emsp;&emsp; $ \large x + 1, \; x + 2 \; ... \; y - n \; ... \; y - 2, \; y - 1 $
+```
+z ∈ N  and  z > 4
+```
 
-4. &nbsp; Then we can define `n` as the length of the `range`, then `n` from the past step is not the same `n` as in this step:
 
-&emsp;&emsp;&emsp; $ \large n \; = \; length(range(x, \; y)) $
-<br>
-&emsp;&emsp; We can also calculate the `length` as:
-<br>
-&emsp;&emsp;&emsp; $ \large n \; = \; 2\sqrt{y} - 3$
 
-5. &nbsp; We can now index the range with zero indexing:
+### Step 2 — Find surrounding perfect squares
 
-&emsp;&emsp;&emsp; $ \large index(x + 1) \; = \; 0 $ <br>
-&emsp;&emsp;&emsp; $ \large index(x + 2) \; = \; 1 $ <br>
-&emsp;&emsp;&emsp; $ \large index(x + 3) \; = \; 2 $ <br>
-&emsp;&emsp;&emsp; ... <br>
-&emsp;&emsp;&emsp; $ \large index(y - 3) \; = \; n - 3 $ <br>
-&emsp;&emsp;&emsp; $ \large index(y - 2) \; = \; n - 2 $ <br>
-&emsp;&emsp;&emsp; $ \large index(y - 1) \; = \; n - 1 $
+Define the closest numbers that have natural roots around `z`:
 
-&emsp;&emsp;&emsp; $ \large range(x, \; y) \; = \; x + 1, \; x + 2 \; ... \; x + n \; ... \; y - 2, \; y - 1 $
-&emsp;&emsp;&emsp; <br>
-&emsp;&emsp;&emsp; $ \large \text{indecies of} \; range(x, \; y) \; = \; 0, \; 1 \; ... \; n - 2, \; n - 1 $
+```
+x < z  and  sqrt(x) ∈ N     (below z)
+y > z  and  sqrt(y) ∈ N     (above z)
+```
 
-6. &nbsp; Then using the indexed range that we made we can find the index of `z` inside the `range`:
 
-&emsp;&emsp;&emsp; $ \large idx \; = \; \text{ index of } z \text{ in } range $
 
-&emsp;&emsp; Simple way to do that is to substract the `first element` of the `range` from the `z` gettting the value representing where are we between `x` and `y` and we can calculate that the first element of the range is just `x + 1`:
+### Step 3 — Generate range between x and y
 
-&emsp;&emsp;&emsp; $ \large idx \; = \; z - range[0], \; range[0] \; = \; x + 1$
-<br>
-&emsp;&emsp;&emsp; $ \large idx \; = \; z - (x + 1)$
-<br>
-&emsp;&emsp;&emsp; $ \large idx \; = \; z - x - 1$
+Create a range from `x` to `y`, **not including them**:
 
-7. &nbsp; Given that we know that $ \large \sqrt{z} \; > \sqrt{x} \;\; \land \;\; \sqrt{z} \; < \sqrt{y} \;$ this implicates:
+```
+range(x, y) = x+1, x+2, ..., y-2, y-1
+```
 
-&emsp;&emsp;&emsp; $ \large \sqrt{z} \; > \sqrt{x} \;\; \land \;\; \sqrt{z} \; < \sqrt{y} \; \implies \; z \; > \; x \;\; \land \;\; z \; < \; y $
 
-8. &nbsp; Finally knowing all of this we can derive this formula:
 
-&emsp;&emsp;&emsp; $ \large \sqrt{z} \; \approx \; \sqrt{x} \; + \; \frac{idx}{n} $
-<br>
-&emsp;&emsp; We can simplify the formula into this form:
-<br>
-&emsp;&emsp;&emsp; $ \large \sqrt{z} \; \approx \; \sqrt{x} \; + \; \frac{z \; - \; x \; - \; 1}{2\sqrt{y} \; - \; 3} $
+### Step 4 — Define n as the range length
 
-# Disclaimer & Conclusion
+Let `n` be the length of that range:
 
-Given the requirements that the number must be above 4 roots of numbers from 0 to 4 can't be calculated.
+```
+n = length(range(x, y))
+```
 
-This algorithm can be looked as a [linear interpolation](https://en.wikipedia.org/wiki/Linear_interpolation) inspired algorithm. The result for numbers between two numbers with natural roots are placed in a kinda linear stepping way, which stems from the way that we calculate the part after the decimal point by getting an index from a range array of number inbetween the two numbers with natural roots.
+We can also express it as:
 
-# Examples
+```
+n = 2 * sqrt(y) - 3
+```
 
-1. Example 1
-   <br>
-   &emsp; $ \large z \; = \; 12 $
-   <br>
-   &emsp; $ \large x \; = \; 9 $
-   <br>
-   &emsp; $ \large y \; = \; 16 $
-   <br>
-   &emsp; $ \large \sqrt{12} \; \approx \; \sqrt{9} \; + \; \frac{12 \; - \; 9 \; - \; 1}{2\sqrt{16} \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{12} \; \approx \; 3 \; + \; \frac{12 \; - \; 9 \; - \; 1}{2 \; \; \cdot \; 4 \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{12} \; \approx \; 3 \; + \; \frac{12 \; - \; 9 \; - \; 1}{8 \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{12} \; \approx \; 3 \; + \; \frac{2}{5} $
-   <br>
-   &emsp; $ \large \sqrt{12} \; \approx \; 3 \; + \; 0.4 $
-   <br>
-   &emsp; $ \large \sqrt{12} \; \approx \; 3.4 $
 
-2. Example 2
-   <br>
-   &emsp; $ \large z \; = \; 34 $
-   <br>
-   &emsp; $ \large x \; = \; 25 $
-   <br>
-   &emsp; $ \large y \; = \; 36 $
-   <br>
-   &emsp; $ \large \sqrt{34} \; \approx \; \sqrt{25} \; + \; \frac{34 \; - \; 25 \; - \; 1}{2\sqrt{36} \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{34} \; \approx \; 5 \; + \; \frac{34 \; - \; 25 \; - \; 1}{2 \; \; \cdot \; 6 \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{34} \; \approx \; 5 \; + \; \frac{34 \; - \; 25 \; - \; 1}{12 \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{34} \; \approx \; 5 \; + \; \frac{8}{9} $
-   <br>
-   &emsp; $ \large \sqrt{34} \; \approx \; 5 \; + \; 0.8888888889 $
-   <br>
-   &emsp; $ \large \sqrt{34} \; \approx \; 5.8888888889 $
 
-3. Example 3
-   <br>
-   &emsp; $ \large z \; = \; 69 $
-   <br>
-   &emsp; $ \large x \; = \; 64 $
-   <br>
-   &emsp; $ \large y \; = \; 81 $
-   <br>
-   &emsp; $ \large \sqrt{69} \; \approx \; \sqrt{64} \; + \; \frac{69 \; - \; 64 \; - \; 1}{2\sqrt{81} \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{69} \; \approx \; 8 \; + \; \frac{69 \; - \; 64 \; - \; 1}{2 \; \; \cdot \; 9 \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{69} \; \approx \; 8 \; + \; \frac{69 \; - \; 64 \; - \; 1}{18 \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{69} \; \approx \; 8 \; + \; \frac{4}{15} $
-   <br>
-   &emsp; $ \large \sqrt{69} \; \approx \; 8 \; + \; 0.2666666667 $
-   <br>
-   &emsp; $ \large \sqrt{69} \; \approx \; 8.2666666667 $
-4. Example 4
-   <br>
-   &emsp; $ \large z \; = \; 95 $
-   <br>
-   &emsp; $ \large x \; = \; 81 $
-   <br>
-   &emsp; $ \large y \; = \; 100 $
-   <br>
-   &emsp; $ \large \sqrt{95} \; \approx \; \sqrt{81} \; + \; \frac{95 \; - \; 81 \; - \; 1}{2\sqrt{100} \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{95} \; \approx \; 9 \; + \; \frac{95 \; - \; 81 \; - \; 1}{2 \; \; \cdot \; 10 \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{95} \; \approx \; 9 \; + \; \frac{95 \; - \; 81 \; - \; 1}{20 \; - \; 3} $
-   <br>
-   &emsp; $ \large \sqrt{95} \; \approx \; 9 \; + \; \frac{13}{17} $
-   <br>
-   &emsp; $ \large \sqrt{95} \; \approx \; 9 \; + \; 0.7647058824 $
-   <br>
-   &emsp; $ \large \sqrt{95} \; \approx \; 9.7647058824 $
+### Step 5 — Index the range (zero-based)
 
-# Implemenatation Template (add your own implementation below)
+```
+index(x + 1) = 0
+index(x + 2) = 1
+index(x + 3) = 2
+...
+index(y - 2) = n - 2
+index(y - 1) = n - 1
+```
 
-- Implementation by `[GITHUB-USERNAME]` in `[LANGUAGE]` on `[FINISHING-DATE]`
-- Please make sure you add links for the username and language, and also use the `DD.MM.YYYY` date format.
+So the range and its indices are:
 
-# Implementations
+```
+range(x, y):       x+1, x+2, ..., y-1
+indices:           0, 1, ..., n-1
+```
 
-- Implementation by [`p4lm4d3v`](https://github.com/p4lm4d3v/) in [`RUST`](https://www.rust-lang.org/) on `08.07.2024.`
+
+
+### Step 6 — Find the index of z in that range
+
+To find where `z` lies between `x` and `y`:
+
+```
+idx = index of z in range
+```
+
+A simple way to calculate it:
+
+```
+range[0] = x + 1
+idx = z - range[0]
+idx = z - (x + 1)
+idx = z - x - 1
+```
+
+
+### Step 7 — Logical bounds
+
+Since:
+
+```
+sqrt(z) > sqrt(x)  and  sqrt(z) < sqrt(y)
+```
+
+This also implies:
+
+```
+z > x  and  z < y
+```
+
+
+
+### Step 8 — Final formula
+
+We can now approximate the square root of z as:
+
+```
+sqrt(z) ≈ sqrt(x) + (idx / n)
+```
+
+Simplified:
+
+```
+sqrt(z) ≈ sqrt(x) + (z - x - 1) / (2 * sqrt(y) - 3)
+```
+
+
+
+## Disclaimer & Conclusion
+
+Given the constraints, numbers ≤ 4 cannot be used because their surrounding roots overlap.
+
+This algorithm can be seen as **a form of linear interpolation**.
+Values between perfect squares are approximated linearly based on their distance between those perfect squares.
+
+
+
+## Examples
+
+### Example 1
+
+```
+z = 12
+x = 9
+y = 16
+
+sqrt(12) ≈ sqrt(9) + (12 - 9 - 1) / (2 * sqrt(16) - 3)
+sqrt(12) ≈ 3 + (2) / (8 - 3)
+sqrt(12) ≈ 3 + 0.4
+sqrt(12) ≈ 3.4
+```
+
+
+
+### Example 2
+
+```
+z = 34
+x = 25
+y = 36
+
+sqrt(34) ≈ sqrt(25) + (34 - 25 - 1) / (2 * sqrt(36) - 3)
+sqrt(34) ≈ 5 + (8) / (12 - 3)
+sqrt(34) ≈ 5 + 0.8888888889
+sqrt(34) ≈ 5.8888888889
+```
+
+
+
+### Example 3
+
+```
+z = 69
+x = 64
+y = 81
+
+sqrt(69) ≈ sqrt(64) + (69 - 64 - 1) / (2 * sqrt(81) - 3)
+sqrt(69) ≈ 8 + (4) / (18 - 3)
+sqrt(69) ≈ 8 + 0.2666666667
+sqrt(69) ≈ 8.2666666667
+```
+
+
+
+### Example 4
+
+```
+z = 95
+x = 81
+y = 100
+
+sqrt(95) ≈ sqrt(81) + (95 - 81 - 1) / (2 * sqrt(100) - 3)
+sqrt(95) ≈ 9 + (13) / (20 - 3)
+sqrt(95) ≈ 9 + 0.7647058824
+sqrt(95) ≈ 9.7647058824
+```
+
+
